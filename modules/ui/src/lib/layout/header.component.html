@@ -4,13 +4,22 @@
     <ul class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
         <!-- Add "active" class when you're on that page" -->
-        <a class="nav-link active" href="/">Home</a>
+        <a [routerLink]="['/']" routerLinkActive="active" class="nav-link"
+          >Home</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/login">Sign in</a>
+        <a [routerLink]="['/login']" routerLinkActive="active" class="nav-link"
+          >Sign in</a
+        >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/register">Sign up</a>
+        <a
+          [routerLink]="['/register']"
+          routerLinkActive="active"
+          class="nav-link"
+          >Sign up</a
+        >
       </li>
     </ul>
   </div>
