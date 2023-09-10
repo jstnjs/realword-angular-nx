@@ -1,5 +1,10 @@
 import { Route } from '@angular/router';
-import { HomeComponent, LoginComponent, RegisterComponent } from 'feature';
+import {
+  HomeComponent,
+  LoginComponent,
+  RegisterComponent,
+  SettingsComponent,
+} from 'feature';
 
 export const appRoutes: Route[] = [
   {
@@ -13,5 +18,9 @@ export const appRoutes: Route[] = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
   },
 ];
