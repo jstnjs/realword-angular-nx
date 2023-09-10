@@ -1,1 +1,1 @@
-export * from './lib/feature.component';
+export * from './lib/home/home.component';
