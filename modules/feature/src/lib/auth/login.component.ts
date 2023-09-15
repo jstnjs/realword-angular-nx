@@ -18,14 +18,7 @@ export class LoginComponent {
   });
 
   login() {
-    const email = this.loginForm.value.email!;
-    const password = this.loginForm.value.password!;
-
-    this.authService.login({
-      user: {
-        email,
-        password,
-      },
-    });
+    const credentials = this.loginForm.getRawValue();
+    this.authService.login(credentials).subscribe();
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { JWTService } from './jwt.service';
 
 export type LoginResponse = {
   user: {
@@ -13,20 +14,27 @@ export type LoginResponse = {
 };
 
 export type LoginRequest = {
-  user: {
-    email: string;
-    password: string;
-  };
+  email: string;
+  password: string;
 };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   http = inject(HttpClient);
+  jwtService = inject(JWTService);
 
-  login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
-      'https://api.realword.io/api/articles',
-      loginRequest
-    );
+  login({ email, password }: LoginRequest): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>('https://api.realworld.io/api/users/login', {
+        user: {
+          email,
+          password,
+        },
+      })
+      .pipe(tap((response) => this.jwtService.setToken(response.user.token)));
+  }
+
+  logout() {
+    this.jwtService.removeToken();
   }
 }
