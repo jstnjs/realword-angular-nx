@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 type JwtToken = {
   iat: number;
@@ -12,48 +12,41 @@ export class JWTService {
   private TOKEN = 'jwt';
   private EXP = 'expires_at';
 
-  isLoggedIn$ = new BehaviorSubject(false);
+  private _token$ = new BehaviorSubject<string | null>(null);
+  token$: Observable<string | null> = this._token$.asObservable();
 
-  private get token(): string | null {
-    return localStorage.getItem(this.TOKEN);
+  isLoggedIn$: Observable<boolean> = this.token$.pipe(
+    map((token) => this.isTokenValid(token))
+  );
+
+  constructor() {
+    const storedToken = localStorage.getItem(this.TOKEN);
+    this.setToken(storedToken);
   }
 
-  setToken(jwt: string) {
-    const decodedToken = jwtDecode<JwtToken>(jwt);
-    localStorage.setItem(this.TOKEN, jwt);
-    localStorage.setItem(this.EXP, decodedToken.exp.toString());
-    this.isLoggedIn$.next(true);
+  setToken(jwt: string | null) {
+    if (jwt !== null) {
+      const decodedToken = jwtDecode<JwtToken>(jwt);
+      localStorage.setItem(this.TOKEN, jwt);
+      localStorage.setItem(this.EXP, decodedToken.exp.toString());
+    } else {
+      localStorage.removeItem(this.TOKEN);
+      localStorage.removeItem(this.EXP);
+    }
+
+    this._token$.next(jwt);
   }
 
   removeToken() {
-    localStorage.removeItem(this.TOKEN);
-    localStorage.removeItem(this.EXP);
-    this.isLoggedIn$.next(false);
+    this.setToken(null);
   }
 
-  private get exp(): number {
-    return Number(localStorage.getItem(this.EXP));
-  }
-
-  isLoggedIn(): Observable<boolean> {
-    if (!this.token) {
-      return of(false);
+  private isTokenValid(token: string | null): boolean {
+    if (!token) {
+      return false;
     }
 
-    if (this.isTokenExpired()) {
-      return of(false);
-    }
-
-    console.log('...');
-
-    return of(true);
-  }
-
-  private isTokenExpired(): boolean {
-    if (this.exp) {
-      return 1000 * this.exp - new Date().getTime() < 5000;
-    }
-
-    return false;
+    const exp = Number(localStorage.getItem(this.EXP));
+    return exp ? 1000 * exp - new Date().getTime() >= 5000 : false;
   }
 }

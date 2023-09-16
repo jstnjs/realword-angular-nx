@@ -16,7 +16,7 @@ export class LoggedInDirective implements OnInit {
   private jwtService = inject(JWTService);
 
   ngOnInit(): void {
-    this.jwtService.isLoggedIn().subscribe((isLoggedIn) => {
+    this.jwtService.isLoggedIn$.subscribe((isLoggedIn) => {
       if (isLoggedIn) {
         this.viewContainer.createEmbeddedView(this.templateRef);
       } else {

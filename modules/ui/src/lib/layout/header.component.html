@@ -1,39 +1,57 @@
 <nav class="navbar navbar-light">
   <div class="container">
     <a class="navbar-brand" href="/">conduit</a>
+
     <ul class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
         <!-- Add "active" class when you're on that page" -->
-        <a [routerLink]="['/']" routerLinkActive="active" class="nav-link"
+        <a
+          [routerLink]="['/']"
+          routerLinkActive="active"
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
           >Home</a
         >
       </li>
-      <li class="nav-item">
-        <a
-          [routerLink]="['/login']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="nav-link"
-          >Sign in</a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          [routerLink]="['/register']"
-          routerLinkActive="active"
-          class="nav-link"
-          >Sign up</a
-        >
-      </li>
 
-      <li *libLoggedIn class="nav-item">
-        <a
-          [routerLink]="['/register']"
-          routerLinkActive="active"
-          class="nav-link"
-          >You are logged in..</a
-        >
-      </li>
+      <ng-container *ngIf="$isLoggedIn | async; else notLoggedIn">
+        <li class="nav-item">
+          <a class="nav-link" href="/editor">
+            <i class="ion-compose"></i>&nbsp;New Article
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/settings">
+            <i class="ion-gear-a"></i>&nbsp;Settings
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile/eric-simons">
+            <img src="" class="user-pic" />
+            Eric Simons
+          </a>
+        </li>
+      </ng-container>
+
+      <ng-template #notLoggedIn>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/login']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+            >Sign in</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/register']"
+            routerLinkActive="active"
+            class="nav-link"
+            >Sign up</a
+          >
+        </li>
+      </ng-template>
     </ul>
   </div>
 </nav>

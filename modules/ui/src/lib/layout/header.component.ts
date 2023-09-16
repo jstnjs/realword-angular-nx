@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { JWTService } from 'data-access';
 import { LoggedInDirective } from 'util';
 
 @Component({
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, LoggedInDirective],
+  imports: [RouterLink, RouterLinkActive, NgIf, AsyncPipe],
   selector: 'lib-ui-layout-header',
   templateUrl: 'header.component.html',
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  jwtService = inject(JWTService);
+
+  $isLoggedIn = this.jwtService.isLoggedIn$;
+}
