@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 type JwtToken = {
   iat: number;
@@ -12,6 +12,8 @@ export class JWTService {
   private TOKEN = 'jwt';
   private EXP = 'expires_at';
 
+  isLoggedIn$ = new BehaviorSubject(false);
+
   private get token(): string | null {
     return localStorage.getItem(this.TOKEN);
   }
@@ -20,11 +22,13 @@ export class JWTService {
     const decodedToken = jwtDecode<JwtToken>(jwt);
     localStorage.setItem(this.TOKEN, jwt);
     localStorage.setItem(this.EXP, decodedToken.exp.toString());
+    this.isLoggedIn$.next(true);
   }
 
   removeToken() {
     localStorage.removeItem(this.TOKEN);
     localStorage.removeItem(this.EXP);
+    this.isLoggedIn$.next(false);
   }
 
   private get exp(): number {
@@ -39,6 +43,8 @@ export class JWTService {
     if (this.isTokenExpired()) {
       return of(false);
     }
+
+    console.log('...');
 
     return of(true);
   }

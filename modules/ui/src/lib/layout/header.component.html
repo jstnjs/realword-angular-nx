@@ -25,6 +25,15 @@
           >Sign up</a
         >
       </li>
+
+      <li *libLoggedIn class="nav-item">
+        <a
+          [routerLink]="['/register']"
+          routerLinkActive="active"
+          class="nav-link"
+          >You are logged in..</a
+        >
+      </li>
     </ul>
   </div>
 </nav>

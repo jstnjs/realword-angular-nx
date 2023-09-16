@@ -1,1 +1,1 @@
-export * from './lib/util.component';
+export { LoggedInDirective } from './lib/logged-in.directive';
