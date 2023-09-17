@@ -2,7 +2,6 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { JWTService } from 'data-access';
-import { LoggedInDirective } from 'util';
 
 @Component({
   standalone: true,

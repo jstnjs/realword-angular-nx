@@ -6,7 +6,7 @@
       <li class="nav-item">
         <!-- Add "active" class when you're on that page" -->
         <a
-          [routerLink]="['/']"
+          routerLink="/"
           routerLinkActive="active"
           class="nav-link"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -16,17 +16,32 @@
 
       <ng-container *ngIf="$isLoggedIn | async; else notLoggedIn">
         <li class="nav-item">
-          <a class="nav-link" href="/editor">
+          <a
+            routerLink="/editor"
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <i class="ion-compose"></i>&nbsp;New Article
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/settings">
+          <a
+            routerLink="/settings"
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <i class="ion-gear-a"></i>&nbsp;Settings
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/profile/eric-simons">
+          <a
+            routerLink="/profile/eric-simons"
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <img src="" class="user-pic" />
             Eric Simons
           </a>
@@ -36,7 +51,7 @@
       <ng-template #notLoggedIn>
         <li class="nav-item">
           <a
-            [routerLink]="['/login']"
+            routerLink="/login"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
             class="nav-link"
@@ -44,10 +59,7 @@
           >
         </li>
         <li class="nav-item">
-          <a
-            [routerLink]="['/register']"
-            routerLinkActive="active"
-            class="nav-link"
+          <a routerLink="/register" routerLinkActive="active" class="nav-link"
             >Sign up</a
           >
         </li>
